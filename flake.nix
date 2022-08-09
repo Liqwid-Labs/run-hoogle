@@ -34,7 +34,7 @@
                   export LC_ALL=C.UTF-8
                   export LANG=C.UTF-8
                   hoogle generate --local --database=local.hoo
-                  ${pkgs.coreutils}/bin/coreutils --coreutils-prog=mkdir hoogle
+                  ${pkgs.coreutils}/bin/coreutils --coreutils-prog=mkdir -p hoogle
                   ${pkgs.coreutils}/bin/coreutils --coreutils-prog=cp -r ${inputs.hoogle}/* ./hoogle
                   # Overwrites from hoogle directory. This is not really required, but in the future,
                   # we may want to have custom html.
@@ -63,6 +63,7 @@
         };
       launchHoogle = config: project: system: pkgs:
         let
+          detached = if config.detached then "-d" else "";
           binPath = "ctl-runtime";
           prebuilt = (pkgs.arion.build {
             inherit pkgs;
@@ -73,7 +74,7 @@
             runtimeInputs = [ pkgs.arion pkgs.docker ];
             text =
               ''
-                ${pkgs.arion}/bin/arion --prebuilt-file ${prebuilt} up
+                ${pkgs.arion}/bin/arion --prebuilt-file ${prebuilt} up ${detached}
               '';
           };
         in
