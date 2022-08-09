@@ -12,7 +12,7 @@ Example flake:
   inputs.agora.url = "github:Liqwid-Labs/agora";
   inputs.run-hoogle.url = "github:Liqwid-labs/run-hoogle";
 
-  outputs = inputs@{ self, nixpkgs, hoogle, ... }:
+  outputs = inputs@{ self, nixpkgs, run-hoogle, ... }:
     {
       apps = run-hoogle.perSystem (system:
         let

@@ -14,7 +14,7 @@
       perSystem = nixpkgs.lib.genAttrs supportedSystems;
       pkgsFor = system: import nixpkgs { inherit system; };
       hoogleFor =
-        config@{ port ? 8081, local ? true, ... }: { pkgs, system, project, ... }:
+        config@{ port ? 8081, local ? true, hoogle-dir ? ./hoogle, ... }: { pkgs, system, project, ... }:
         let
           opts =
             builtins.concatStringsSep " " [
@@ -37,7 +37,7 @@
                   ${pkgs.coreutils}/bin/coreutils --coreutils-prog=cp -r ${inputs.hoogle}/* ./hoogle
                   # Overwrites from hoogle directory. This is not really required, but in the future,
                   # we may want to have custom html.
-                  ${pkgs.coreutils}/bin/coreutils --coreutils-prog=cp -r ${./hoogle}/* ./hoogle
+                  ${pkgs.coreutils}/bin/coreutils --coreutils-prog=cp -r ${hoogle-dir}/* ./hoogle
                   hoogle server ${opts} --datadir hoogle --database local.hoo
                 '';
               }
