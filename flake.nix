@@ -16,11 +16,12 @@
       hoogleFor =
         config@{ port ? 8081, local ? true, hoogle-dir ? ./hoogle, ... }: { pkgs, system, project, ... }:
         let
+          port' = builtins.toString port;
           opts =
             builtins.concatStringsSep " " [
               (if builtins.isString config.home then "--home " + config.home else "")
               (if builtins.isString config.host then "--host " + config.host else "")
-              (if builtins.isInt port then "--port " + (builtins.toString port) else "")
+              ("--port " + port')
               (if local then "--local" else "")
             ];
           run-hoogle =
@@ -55,7 +56,7 @@
                 ''
               ];
               service.ports = [
-                "${port}:${port}" # host:container
+                "${port'}:${port'}" # host:container
               ];
             };
           };
